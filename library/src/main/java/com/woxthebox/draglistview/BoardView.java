@@ -53,7 +53,7 @@ public class BoardView extends HorizontalScrollView implements AutoScroller.Auto
     private FrameLayout mRootLayout;
     private LinearLayout mColumnLayout;
     private ArrayList<DragItemRecyclerView> mLists = new ArrayList<>();
-    private SparseArray<View> mHeaders = new SparseArray<>();
+    private ArrayList<View> mHeaders = new ArrayList<>();
     private DragItemRecyclerView mCurrentRecyclerView;
     private DragItem mDragItem;
     private BoardListener mBoardListener;
@@ -534,6 +534,10 @@ public class BoardView extends HorizontalScrollView implements AutoScroller.Auto
     }
 
     public DragItemRecyclerView addColumnList(final DragItemAdapter adapter, final View header, boolean hasFixedItemSize) {
+        return addColumnList(mLists.size(), adapter, header, hasFixedItemSize);
+    }
+
+    public DragItemRecyclerView addColumnList(int index, final DragItemAdapter adapter, final View header, boolean hasFixedItemSize) {
         final DragItemRecyclerView recyclerView = new DragItemRecyclerView(getContext());
         recyclerView.setMotionEventSplittingEnabled(false);
         recyclerView.setDragItem(mDragItem);
@@ -580,17 +584,20 @@ public class BoardView extends HorizontalScrollView implements AutoScroller.Auto
             }
         });
 
+        index = Math.min(index, mLists.size());
+        index = Math.max(index, 0);
+
         LinearLayout layout = new LinearLayout(getContext());
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setLayoutParams(new LayoutParams(mColumnWidth, LayoutParams.MATCH_PARENT));
         if (header != null) {
             layout.addView(header);
-            mHeaders.put(mLists.size(), header);
+            mHeaders.add(index, header);
         }
         layout.addView(recyclerView);
 
-        mLists.add(recyclerView);
-        mColumnLayout.addView(layout);
+        mLists.add(index, recyclerView);
+        mColumnLayout.addView(layout, index);
         return recyclerView;
     }
 

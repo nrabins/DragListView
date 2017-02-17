@@ -23,5 +23,9 @@
     <string name="action_list">List (drag on touch image icon)</string>
     <string name="action_grid_vertical">Grid vertical (drag on long press)</string>
     <string name="action_grid_horizontal">Grid horizontal (drag on long press)</string>
+    <string name="action_add_column_to_beginning">Add column to beginning</string>
+    <string name="action_add_column_to_end">Add column to end</string>
+    <string name="action_remove_column">Remove column</string>
+    <string name="action_clear_board">Clear board</string>
 
 </resources>

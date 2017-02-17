@@ -95,10 +95,10 @@ public class BoardFragment extends Fragment {
 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Board");
 
-        addColumnList();
-        addColumnList();
-        addColumnList();
-        addColumnList();
+        addColumnList(0);
+        addColumnList(1);
+        addColumnList(2);
+        addColumnList(3);
     }
 
     @Override
@@ -125,20 +125,27 @@ public class BoardFragment extends Fragment {
                 mBoardView.setDragEnabled(true);
                 getActivity().invalidateOptionsMenu();
                 return true;
-            case R.id.action_add_column:
-                addColumnList();
+            case R.id.action_add_column_to_beginning:
+                addColumnList(0);
+                mBoardView.scrollToColumn(0, true);
+                return true;
+            case R.id.action_add_column_to_end:
+                addColumnList(mColumns);
+                mBoardView.scrollToColumn(mColumns-1, true);
                 return true;
             case R.id.action_remove_column:
                 mBoardView.removeColumn(0);
+                mColumns--;
                 return true;
             case R.id.action_clear_board:
                 mBoardView.clearBoard();
+                mColumns = 0;
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void addColumnList() {
+    private void addColumnList(int index) {
         final ArrayList<Pair<Long, String>> mItemArray = new ArrayList<>();
         int addItems = 15;
         for (int i = 0; i < addItems; i++) {
@@ -165,7 +172,8 @@ public class BoardFragment extends Fragment {
             }
         });
 
-        mBoardView.addColumnList(listAdapter, header, false);
+        mBoardView.addColumnList(index, listAdapter, header, false);
+
         mColumns++;
     }
 
